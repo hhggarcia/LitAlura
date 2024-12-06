@@ -1,9 +1,6 @@
 package com.alura.LiterAlura.principal;
 
-import com.alura.LiterAlura.model.Autor;
-import com.alura.LiterAlura.model.Book;
-import com.alura.LiterAlura.model.DatosBook;
-import com.alura.LiterAlura.model.DatosRequest;
+import com.alura.LiterAlura.model.*;
 import com.alura.LiterAlura.repository.AutorRepository;
 import com.alura.LiterAlura.repository.BookRepository;
 import com.alura.LiterAlura.services.ConvertData;
@@ -130,10 +127,35 @@ public class Principal {
     }
 
     private void buscarAutoresPorAnio() {
-        System.out.println("Hola mundo 4");
+        //System.out.println("Hola mundo 4");
+        System.out.println("Ingrese el año para buscar autores vivos: ");
+        Integer year = teclado.nextInt();
+        List<Autor> authors = repoAutor.findAuthorsAliveInYear(year);
+        if (authors.isEmpty()) {
+            System.out.println("No se encontraron autores vivos en el año " + year);
+        } else {
+            System.out.println("Autores vivos en el año " + year + ":\n");
+            authors.forEach(author -> System.out.println(author.toString()));
+        }
     }
 
     private void mostrarLibrosPorIdioma() {
-        System.out.println("Hola mundo 5");
+        //System.out.println("Hola mundo 5");
+        System.out.println("Ingrese el idioma para buscar libros (ES, EN, FR, PT): ");
+        String input = teclado.nextLine().toUpperCase();
+
+        try {
+            Idioma idioma = Idioma.valueOf(input);
+            System.out.println("Libros en el idioma " + idioma + ":\n");
+            List<Book> books = repositorio.findByLenguajes(idioma);
+            if (books.isEmpty()) {
+                System.out.println("No se encontraron libros en el idioma " + idioma);
+            } else {
+                books.forEach(book -> System.out.println(book.toString()));
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Idioma no válido. Por favor, ingrese uno de los siguientes: ES, EN, FR, PT");
+        }
+
     }
 }
